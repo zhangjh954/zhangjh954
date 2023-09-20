@@ -1,35 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Linux命令行实现回收站功能</title>
-    <url>/2023/09/20/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%9E%E7%8E%B0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<p>使用rm命令需要格外小心，因为一旦删除，就无法恢复<br>为了防止误删，我们可以手动创建一个回收站</p>
-<h1 id="1-创建回收站文件夹"><a href="#1-创建回收站文件夹" class="headerlink" title="1.创建回收站文件夹"></a>1.创建回收站文件夹</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir /home/username/.trash</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-重写rm命令"><a href="#2-重写rm命令" class="headerlink" title="2.重写rm命令"></a>2.重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/remove.sh</span><br><span class="line"># 写入</span><br><span class="line"> PARA_CNT=$#               # $#:传给脚本的参数个数</span><br><span class="line"> TRASH_DIR=&quot;/home/username/.trash&quot;     </span><br><span class="line"> for i in $*;              # $*:以一个单字符串显示所有向脚本传递的参数</span><br><span class="line"> do</span><br><span class="line">   STAMP=`date +%s`</span><br><span class="line">   fileName=`basename $i`  # basename $i:删除文件目录，只留文件名称</span><br><span class="line">   mv $i $TRASH_DIR/$fileName.$STAMP   </span><br><span class="line"> done</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 赋予remove.sh可执行权限</span><br><span class="line">chmod +x remove.sh  </span><br></pre></td></tr></table></figure>
-
-<h1 id="3-在bashrc中重写rm命令"><a href="#3-在bashrc中重写rm命令" class="headerlink" title="3.在bashrc中重写rm命令"></a>3.在bashrc中重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line">#写入</span><br><span class="line"> alias rm=&quot;sh /home/username/remove.sh&quot;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使生效</span><br><span class="line">source ~/.bashrc           </span><br></pre></td></tr></table></figure>
-
-<h1 id="4-每天定时清理回收站"><a href="#4-每天定时清理回收站" class="headerlink" title="4.每天定时清理回收站"></a>4.每天定时清理回收站</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e  # 编辑定时任务</span><br><span class="line"># 写入</span><br><span class="line"> 0 0 * * * rm -rf /home/username/.trash/*   # 每天0点清空回收站</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看定时任务</span><br><span class="line">crontab -l  </span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
-    <title>CNT--Classical Nucleation Theory</title>
-    <url>/2023/03/07/CNT-Classical-Nucleation-Theory/</url>
-    <content><![CDATA[<h1 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h1><p><strong>经典成核理论</strong>（Classical nucleation theory，<strong>CNT</strong>）是用于研究<a href="https://zh.wikipedia.org/wiki/%E6%88%90%E6%A0%B8">成核</a>现象的理论模型。</p>
-<p>CNT是建立在成核动力学理论的基础上的，解释了当分子i从气相转移到半径为r的i-mer簇时，系统的吉布斯自由能是如何变化的。这种转变过程被称为气体到粒子的过程。气溶胶形成的吉布斯自由能变化(ΔG)是从蒸汽到团簇的化学势变化，产生团簇表面的自由能，以及溶质分子的溶剂化能的总和，写为</p>
-<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/BackUp\xiaobao-d\typora-user-images\CNT-Classical-Nucleation-Theory.assets\image-20230712111203450.png" alt="image-20230712111203450"></p>
-<p>其中kB是玻尔兹曼常数</p>
-<h1 id="与Molecular-Dynamics（MD）结合"><a href="#与Molecular-Dynamics（MD）结合" class="headerlink" title="与Molecular Dynamics（MD）结合"></a>与Molecular Dynamics（MD）结合</h1>]]></content>
-  </entry>
-  <entry>
     <title>Atmospheric Cluster Dynamics Code（ACDC）使用教程</title>
     <url>/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
     <content><![CDATA[<p>！先大致列个框架，之后有时间再来补细节</p>
@@ -53,32 +24,90 @@
 ]]></content>
   </entry>
   <entry>
-    <title>英语邮件</title>
-    <url>/2023/02/25/%E8%8B%B1%E8%AF%AD%E9%82%AE%E4%BB%B6/</url>
-    <content><![CDATA[<h1 id="邮件名"><a href="#邮件名" class="headerlink" title="邮件名"></a>邮件名</h1><p>简明扼要，交代事由。</p>
-<h1 id="开头的称谓"><a href="#开头的称谓" class="headerlink" title="开头的称谓"></a>开头的称谓</h1><p>Dear (courtesy title)尊称 (last name)姓 or 全称<br>Dear first name last name<br>courtesy title: Mr(男性),Mrs(已婚女性),Miss(未婚女性),Ms(已婚or未婚),Dr,Prof<br>完全不知道对方是谁：Dear Sir/Madam<br>写给某办公室：Dear xxx Office/Dear colleagues</p>
-<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h2><p><strong>正式邮件开头问候：</strong>I hope this email finds you well. This is 姓名 from 单位.<br>I hope you had a good weekend. 一般周一的时候用<br><strong>开头表示感谢：</strong>Thanks for your email about/feedback on/your invitation/your suggestion.<br><strong>如果对方很快回复，开头表示感谢：</strong>Thanks for your prompt reply.<br><strong>如果自己很晚回复邮件：</strong>Sorry for my late reply.</p>
-<p><strong>写信目的（Writing purpose）：</strong>I am write to you with regards to…<br>I am writing to ask/enquire/let you know/confirm/check/invite you to/to update you on/ask for a faver..<br>I am contacting you to inform..<br>l am reaching out because…</p>
-<p><strong>含附件：</strong><br>I’ve attached… (I have attached the signed agreement to this email)<br>Please find [file] attached.<br>The attached file contains…<br>Please take a look at the attached file.<br>Please refer to the attached file for more details.<br>Could you please sign the attached form and send it back to us by [date]?<br>If the agreement looks good to you, please sign and send it back to us. </p>
-<p><strong>提出请求：</strong>Could you please….?<br>Could you possibly tell me .. ?<br>I’d really appreciate it/be very grateful if you could…<br>It would be very helpful if you could send us/me…<br>I was wondering if you could/if you would be able to<br>If possible, I’d like to konw (more) about…<br>Please find my two main questions below.<br>At your convenience, would you please send me…..</p>
-<p><strong>获取他人意见或者许可：</strong>Please let me know if this is OK with you.<br>What do you think?<br>Please let me know what you think.</p>
-<p><strong>客套话：</strong><br>Please do not hesitate to let me know if you need any help or further information.<br>Please feel free to let me know if you have any comments or questions.<br>！feel free最好不要用在下级对上级的情况<br>Please feel free to email me if you have any questions.<br>！feel free最好不要用在下级对上级的情况<br>Any questions feel free to let us know.   ！feel free最好不要用在下级对上级的情况<br>Feel free to give your comments. </p>
-<p><strong>结尾：</strong><br>Thank you very much for your kind consideration! I am sorry for any inconvenience.<br>Looking forward to hearing from you soon/seeing/meeting you.<br>Thank you in advance.<br>Any feedback you can give me on this would be greatly/highly/much appraciated.<br>Thank you for your kind consideration. ！谢谢你的善解人意<br>Thank you for your assistance with….<br>Many thanks<br>Again, really appreciate your help!</p>
-<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p><strong>（简洁不是很manner）如果你给别人做事：</strong>Will do. 好的，我会去做<br>On it now. 我现在就开始做<br>Will send over a draft by the end of the day. 下班前会给您初搞<br>I am having trouble accessing XYZ’s site. Might have to get back to you tomorrow. Is that okay?<br>I have a lab report and a problem set due on the same day.Could I have an extension till Wednesday?</p>
-<p><strong>（简洁不是很manner）如果是自己负责的项目：</strong>Received with thank.<br>How’s your XXX(research paper, draft analysis, lab report) going? ！催进度<br>Then second half needs a bit more work. Check this report we published last quarter, and send me what you have this pm. ！你发给我的初搞后半段还得改改。我给你发一份上季度我们写的报告，你按照这个写。下午不管写到哪儿都发给我看看。</p>
-<h1 id="落款"><a href="#落款" class="headerlink" title="落款"></a>落款</h1><p>Sincerely,<br>Best regards,<br>Best,<br>Best wishes,</p>
+    <title>CNT--Classical Nucleation Theory</title>
+    <url>/2023/03/07/CNT-Classical-Nucleation-Theory/</url>
+    <content><![CDATA[<h1 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h1><p><strong>经典成核理论</strong>（Classical nucleation theory，<strong>CNT</strong>）是用于研究<a href="https://zh.wikipedia.org/wiki/%E6%88%90%E6%A0%B8">成核</a>现象的理论模型。</p>
+<p>CNT是建立在成核动力学理论的基础上的，解释了当分子i从气相转移到半径为r的i-mer簇时，系统的吉布斯自由能是如何变化的。这种转变过程被称为气体到粒子的过程。气溶胶形成的吉布斯自由能变化(ΔG)是从蒸汽到团簇的化学势变化，产生团簇表面的自由能，以及溶质分子的溶剂化能的总和，写为</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230712111203450.png" alt="image-20230712111203450"></p>
+<p>其中k<sub>B</sub>是玻尔兹曼常数，T是温度，P<sub>r</sub>是曲面的蒸气压，P<sub>0</sub>是周围环境的实际蒸气压，V<sub>1</sub>是单分子的体积，r是团簇半径，σ是表面张力，ΔG<sub>sol</sub>是溶质分子的溶解能。</p>
+<p>引入相对湿度（RH）和开尔文方程，方程可改写为</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144508720.png" alt="image-20230920144508720"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144615028.png" alt="image-20230920144615028"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144645571.png" alt="image-20230920144645571"></p>
+<p>P<sub>sat</sub>平面的饱和蒸汽压，σ可以从MD模拟得到。</p>
+<h1 id="与Molecular-Dynamics（MD）结合"><a href="#与Molecular-Dynamics（MD）结合" class="headerlink" title="与Molecular Dynamics（MD）结合"></a>与Molecular Dynamics（MD）结合</h1><p>接下仅是记录求成核能垒的过程</p>
+<p>V<sub>1</sub>可以利用Multiwfn软件求到：<a href="http://sobereva.com/102">谈谈分子体积的计算 - 思想家公社的门口：量子化学·分子模拟·二次元 (sobereva.com)</a></p>
+<p>RH可以自己设定值，如：0.8、0.9、1.0、1.5等</p>
+<p>ΔG<sub>sol</sub>由Gaussian软件计算得到：<a href="http://sobereva.com/327">谈谈隐式溶剂模型下溶解自由能和体系自由能的计算 - 思想家公社的门口：量子化学·分子模拟·二次元 (sobereva.com)</a></p>
+<p>接下主要说明σ如何求得</p>
+<p>首先先计算出团簇得径向数量密度ρ(r)（写代码），使用双曲函数进行拟合（gnuplot），得到液相密度</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920150019138.png" alt="image-20230920150019138"></p>
+<p>ρ<sub>α</sub> 是液相密度和ρ<sub>β</sub>是气相密度，气相密度可忽略不计，r为变量，r<sub>0</sub>为常数值，可以调节函数进行拟合，得到ρ<sub>α</sub>和ξ。</p>
+<p>拟合脚本fit.gnu</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920155159475.png" alt="image-20230920155159475"></p>
+<p>fit.par</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920155343814.png" alt="image-20230920155343814"></p>
+<p>求Irving-Kirkwood压力张量<img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920151617450.png" alt="image-20230920151617450"></p>
+<p>f<sub>k</sub>是作用在表面上的成对分子力的法向分量，u(r<sub>ij</sub>)是分子I和j的成对相互作用能</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152028981.png" alt="image-20230920152028981"></p>
+<p>i，j之间可能没有穿过表面、穿过一次表面和穿过两次表面，所以这里需要有一个距离判断，r是某一个表面的半径，需要在r<sub>min</sub>和r<sub>max</sub>之间才会穿过表面</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152356503.png" alt="image-20230920152356503"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152412370.png" alt="image-20230920152412370"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152429810.png" alt="image-20230920152429810"></p>
+<p>接着还要判断通过λ判断，是一次穿过还是两次穿过，两次穿过的话fk需要乘2</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152214834.png" alt="image-20230920152214834"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154235885.png" alt="image-20230920154235885"></p>
+<p>通过对P<sub>N</sub>(r)的函数进行积分得到W的功</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154437008.png" alt="image-20230920154437008"></p>
+<p>R<sub>β</sub>是球体在蒸汽区的半径，P<sub>β</sub>是蒸汽压。由于蒸气压较低，上述第二项可以省略</p>
+<p>接着求团簇的有效半径</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920150707998.png" alt="image-20230920150707998"></p>
+<p>dr之间的数量*r<sup>3</sup>，然后从0到最大半径处积分</p>
+<p>最后通过W和Re得到σ</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154712145.png" alt="image-20230920154712145"></p>
+<p>成核速率</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154756313.png" alt="image-20230920154756313"></p>
+<p>其中J<sub>0</sub>为指前因子，ΔG*为成核势垒</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>(1) Farkas, L. Keimbildungsgeschwindigkeit in übersättigten Dämpfen. <em>Z. Phys. Chem.</em> <strong>1927</strong>, <em>125U</em>, 236-242.</p>
+<p>(2) Becker, R.; Döring, W. Kinetische Behandlung Der Keimbildung in übersättigten Dämpfen. <em>Ann. Phys.</em> <strong>1935</strong>, <em>416</em>, 719-752.</p>
+<p>(3) Frenkel, J. Statistical Theory of Condensation Phenomena. <em>J. Chem. Phys.</em> <strong>1939</strong>, <em>7</em>, 200-201.</p>
+<p>(4) Skinner, L. M.; Sambles, J. R. The Kelvin Equation—a Review. <em>J. Aerosol Sci.</em> <strong>1972</strong>, <em>3</em>, 199-210.</p>
+<p>(5) Walton, J. P. R. B.; Tildesley, D. J.; Rowlinson, J. S.; Henderson, J. R. The Pressure Tensor at the Planar Surface of a Liquid. <em>Mol. Phys.</em> <strong>1983</strong>, <em>48</em>, 1357-1368.</p>
+<p>(6) Li, X.; Hede, T.; Tu, Y.; Leck, C.; Ågren, H. Surface-Active <em>cis</em>-Pinonic Acid in Atmospheric Droplets: A Molecular Dynamics Study. <em>J. Phys. Chem. Lett.</em> <strong>2010</strong>, <em>1</em>, 769-773.</p>
+<p>(7) Li, X.; Hede, T.; Tu, Y.; Leck, C.; Ågren, H. Glycine in Aerosol Water Droplets: A Critical Assessment of Köhler Theory by Predicting Surface Tension from Molecular Dynamics Simulations. <em>Atmos. Chem. Phys.</em> <strong>2011</strong>, <em>11</em>, 519-527.</p>
+<p>(8) Thompson, S. M.; Gubbins, K. E.; Walton, J. P. R. B.; Chantry, R. A. R.; Rowlinson, J. S. A Molecular Dynamics Study of Liquid Drops. <em>J. Chem. Phys.</em> <strong>1984</strong>, <em>81</em>, 530-542.</p>
+<p>(9) Zakharov, V. V.; Brodskaya, E. N.; Laaksonen, A. Surface Tension of Water Droplets: A Molecular Dynamics Study of Model and Size Dependencies. <em>J. Chem. Phys.</em> <strong>1997</strong>, <em>107</em>, 10675-10683.</p>
+<p>(10) Vehkamäki, H.; Riipinen, I. Thermodynamics and Kinetics of Atmospheric Aerosol Particle Formation and Growth. <em>Chem. Soc. Rev.</em> <strong>2012</strong>, <em>41</em>, 5160-5173.</p>
+<p>(11) Zhao, Z.; Kong, K.; Wang, S.; Zhou, Y.; Cheng, D.; Wang, W.; Zeng, X. C.; Li, H. Understanding Hygroscopic Nucleation of Sulfate Aerosols: Combination of Molecular Dynamics Simulation with Classical Nucleation Theory. <em>J. Phys. Chem. Lett.</em> <strong>2019</strong>, <em>10</em>, 1126-1132.</p>
+<p>(12) Zhang, R.; Khalizov, A.; Wang, L.; Hu, M.; Xu, W. Nucleation and Growth of Nanoparticles in the Atmosphere. <em>Chem. Rev.</em> <strong>2012</strong>, <em>112</em>, 1957-2011.</p>
+<p>(13) Talanquer, V.; Oxtoby, D. W. Nucleation on a Solid Substrate: A Density Functional Approach. <em>J. Chem. Phys.</em> <strong>1996</strong>, <em>104</em>, 1483-1492.</p>
+<p>(14) Liu, L.; Guo, S.; Zhao, Z.; Li, H. Free Energy Prediction of Ion-Induced Nucleation of Aqueous Aerosols. <em>J. Phys. Chem. A</em> <strong>2022</strong>, <em>126</em>, 2407-2416.</p>
+<p>(15) Ushcats, M. V.; Bulavin, L. A.; Sysoev, V. M.; Bardik, V. Y.; Alekseev, A. N. Statistical Theory of Condensation – Advances and Challenges. <em>J. Mol. Liq.</em> <strong>2016</strong>, <em>224</em>, 694-712.</p>
 ]]></content>
   </entry>
   <entry>
-    <title>地道英语表达</title>
-    <url>/2023/02/25/%E5%9C%B0%E9%81%93%E8%8B%B1%E8%AF%AD%E8%A1%A8%E8%BE%BE/</url>
-    <content><![CDATA[<p><strong>上班：</strong></p>
-<p>1.<em>Tom: I am <strong>going to work</strong>.</em> <em>Mary: Be safe. Love ya.</em>         ！强调去上班的动作。<br>2.<em>I am <strong>on duty</strong> at 8:00 a.m.</em>              ！我早晨8点要值班。（在某一时间段，持续负责某件事。）<br>3.<em>I have to <strong>clock in</strong> by eight a.m.</em>      ！我必须早上8点前打卡上班。<br>5.<em>We are going to <strong>kick off the work</strong> next week!</em>               ！我们将在下周开工！<br>6.<em>I have to <strong>get back to work</strong>.</em>           ！我要回去工作了。</p>
-<p><strong>下班：</strong></p>
-<p>1.<em>I usually go <strong>off duty</strong> at 7 p.m.</em>                                         ！我通常晚上7点下班。<br>2.<em>I had a long day. I didn’t get <strong>off work</strong> until 10 p.m.</em>      ！今天太忙了。忙到晚上10点才下班。<br>3.<em>Don’t forget to <strong>clock out</strong> before you go.</em>                         ！你走之前别忘记打卡。<br>4.<em>I’m getting a bit tired now. let’s <strong>call it a day</strong>.</em>                 ！我有些累了，收工吧。<br>5.<em>Let’s <strong>call it a day</strong> and go to the movies.</em>                         ！我们收工看电影去吧。</p>
-<p><strong>电话英语礼貌结束通话:</strong></p>
-<p>1.<em>I’ve really got to go, I’ll get back to you when I get the office.</em><br>！我真的得走了，我到办公室再打给你。<br>2.<em>Sorry, I must end the conversation. There’s someone on the other line.</em><br>！抱歉，我不能再说了。我还有另外一通电话要接。<br>3.<em>Sorry, I’ve got to hang up. My wife’s waiting for me.</em><br>！抱歉，我得挂电话了。我老婆在等我。<br>4.<em>I think I’d better let you go. I’ll talk to you later.</em><br>！我想我应该让你去忙了，我晚点再打给你。<br>5.<em>I have to get back to work. I’ll call you later tonight.</em><br>！我要回去工作了。我今晚再打给你。<br>6.<em>Shall we continue this later? I’ve got a call waiting.</em><br>！我们可不可以晚一点再继续聊？我这边有个电话打进来了。<br>7.<em>It’s kind of late. Why don’t we talk about it tomorrow?</em><br>！有点晚了。我们何不明天再谈呢?<br>8.<em>I’ve got to meet a client right now. Can we talk later?</em><br>！我现在要去见一个客户。我们可以晚一点再谈吗?<br>9.<em>I won’t keep you any longer.</em>   ！我不耽误你时间了。<br>10.<em>Sorry, it’s getting late. Can you call again tomorrow morning?</em><br>！抱歉，时候不早了。你可不可以明天早上再打来?</p>
-<p><strong>相关部门为你制作好了校园卡，你去取：</strong> <em><strong>pick up</strong> my campus card.</em></p>
+    <title>Hello Wrold</title>
+    <url>/2021/11/14/Hello-Wrold/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>Linux命令行实现回收站功能</title>
+    <url>/2023/09/20/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%9E%E7%8E%B0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>使用rm命令需要格外小心，因为一旦删除，就无法恢复<br>为了防止误删，我们可以手动创建一个回收站</p>
+<h1 id="1-创建回收站文件夹"><a href="#1-创建回收站文件夹" class="headerlink" title="1.创建回收站文件夹"></a>1.创建回收站文件夹</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir /home/username/.trash</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-重写rm命令"><a href="#2-重写rm命令" class="headerlink" title="2.重写rm命令"></a>2.重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/remove.sh</span><br><span class="line"># 写入</span><br><span class="line"> PARA_CNT=$#               # $#:传给脚本的参数个数</span><br><span class="line"> TRASH_DIR=&quot;/home/username/.trash&quot;     </span><br><span class="line"> for i in $*;              # $*:以一个单字符串显示所有向脚本传递的参数</span><br><span class="line"> do</span><br><span class="line">   STAMP=`date +%s`</span><br><span class="line">   fileName=`basename $i`  # basename $i:删除文件目录，只留文件名称</span><br><span class="line">   mv $i $TRASH_DIR/$fileName.$STAMP   </span><br><span class="line"> done</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 赋予remove.sh可执行权限</span><br><span class="line">chmod +x remove.sh  </span><br></pre></td></tr></table></figure>
+
+<h1 id="3-在bashrc中重写rm命令"><a href="#3-在bashrc中重写rm命令" class="headerlink" title="3.在bashrc中重写rm命令"></a>3.在bashrc中重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line">#写入</span><br><span class="line"> alias rm=&quot;sh /home/username/remove.sh&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使生效</span><br><span class="line">source ~/.bashrc           </span><br></pre></td></tr></table></figure>
+
+<h1 id="4-每天定时清理回收站"><a href="#4-每天定时清理回收站" class="headerlink" title="4.每天定时清理回收站"></a>4.每天定时清理回收站</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e  # 编辑定时任务</span><br><span class="line"># 写入</span><br><span class="line"> 0 0 * * * rm -rf /home/username/.trash/*   # 每天0点清空回收站</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看定时任务</span><br><span class="line">crontab -l  </span><br></pre></td></tr></table></figure>
+
 ]]></content>
   </entry>
   <entry>
@@ -111,8 +140,32 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Hello Wrold</title>
-    <url>/2021/11/14/Hello-Wrold/</url>
-    <content><![CDATA[]]></content>
+    <title>地道英语表达</title>
+    <url>/2023/02/25/%E5%9C%B0%E9%81%93%E8%8B%B1%E8%AF%AD%E8%A1%A8%E8%BE%BE/</url>
+    <content><![CDATA[<p><strong>上班：</strong></p>
+<p>1.<em>Tom: I am <strong>going to work</strong>.</em> <em>Mary: Be safe. Love ya.</em>         ！强调去上班的动作。<br>2.<em>I am <strong>on duty</strong> at 8:00 a.m.</em>              ！我早晨8点要值班。（在某一时间段，持续负责某件事。）<br>3.<em>I have to <strong>clock in</strong> by eight a.m.</em>      ！我必须早上8点前打卡上班。<br>5.<em>We are going to <strong>kick off the work</strong> next week!</em>               ！我们将在下周开工！<br>6.<em>I have to <strong>get back to work</strong>.</em>           ！我要回去工作了。</p>
+<p><strong>下班：</strong></p>
+<p>1.<em>I usually go <strong>off duty</strong> at 7 p.m.</em>                                         ！我通常晚上7点下班。<br>2.<em>I had a long day. I didn’t get <strong>off work</strong> until 10 p.m.</em>      ！今天太忙了。忙到晚上10点才下班。<br>3.<em>Don’t forget to <strong>clock out</strong> before you go.</em>                         ！你走之前别忘记打卡。<br>4.<em>I’m getting a bit tired now. let’s <strong>call it a day</strong>.</em>                 ！我有些累了，收工吧。<br>5.<em>Let’s <strong>call it a day</strong> and go to the movies.</em>                         ！我们收工看电影去吧。</p>
+<p><strong>电话英语礼貌结束通话:</strong></p>
+<p>1.<em>I’ve really got to go, I’ll get back to you when I get the office.</em><br>！我真的得走了，我到办公室再打给你。<br>2.<em>Sorry, I must end the conversation. There’s someone on the other line.</em><br>！抱歉，我不能再说了。我还有另外一通电话要接。<br>3.<em>Sorry, I’ve got to hang up. My wife’s waiting for me.</em><br>！抱歉，我得挂电话了。我老婆在等我。<br>4.<em>I think I’d better let you go. I’ll talk to you later.</em><br>！我想我应该让你去忙了，我晚点再打给你。<br>5.<em>I have to get back to work. I’ll call you later tonight.</em><br>！我要回去工作了。我今晚再打给你。<br>6.<em>Shall we continue this later? I’ve got a call waiting.</em><br>！我们可不可以晚一点再继续聊？我这边有个电话打进来了。<br>7.<em>It’s kind of late. Why don’t we talk about it tomorrow?</em><br>！有点晚了。我们何不明天再谈呢?<br>8.<em>I’ve got to meet a client right now. Can we talk later?</em><br>！我现在要去见一个客户。我们可以晚一点再谈吗?<br>9.<em>I won’t keep you any longer.</em>   ！我不耽误你时间了。<br>10.<em>Sorry, it’s getting late. Can you call again tomorrow morning?</em><br>！抱歉，时候不早了。你可不可以明天早上再打来?</p>
+<p><strong>相关部门为你制作好了校园卡，你去取：</strong> <em><strong>pick up</strong> my campus card.</em></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>英语邮件</title>
+    <url>/2023/02/25/%E8%8B%B1%E8%AF%AD%E9%82%AE%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="邮件名"><a href="#邮件名" class="headerlink" title="邮件名"></a>邮件名</h1><p>简明扼要，交代事由。</p>
+<h1 id="开头的称谓"><a href="#开头的称谓" class="headerlink" title="开头的称谓"></a>开头的称谓</h1><p>Dear (courtesy title)尊称 (last name)姓 or 全称<br>Dear first name last name<br>courtesy title: Mr(男性),Mrs(已婚女性),Miss(未婚女性),Ms(已婚or未婚),Dr,Prof<br>完全不知道对方是谁：Dear Sir/Madam<br>写给某办公室：Dear xxx Office/Dear colleagues</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h2><p><strong>正式邮件开头问候：</strong>I hope this email finds you well. This is 姓名 from 单位.<br>I hope you had a good weekend. 一般周一的时候用<br><strong>开头表示感谢：</strong>Thanks for your email about/feedback on/your invitation/your suggestion.<br><strong>如果对方很快回复，开头表示感谢：</strong>Thanks for your prompt reply.<br><strong>如果自己很晚回复邮件：</strong>Sorry for my late reply.</p>
+<p><strong>写信目的（Writing purpose）：</strong>I am write to you with regards to…<br>I am writing to ask/enquire/let you know/confirm/check/invite you to/to update you on/ask for a faver..<br>I am contacting you to inform..<br>l am reaching out because…</p>
+<p><strong>含附件：</strong><br>I’ve attached… (I have attached the signed agreement to this email)<br>Please find [file] attached.<br>The attached file contains…<br>Please take a look at the attached file.<br>Please refer to the attached file for more details.<br>Could you please sign the attached form and send it back to us by [date]?<br>If the agreement looks good to you, please sign and send it back to us. </p>
+<p><strong>提出请求：</strong>Could you please….?<br>Could you possibly tell me .. ?<br>I’d really appreciate it/be very grateful if you could…<br>It would be very helpful if you could send us/me…<br>I was wondering if you could/if you would be able to<br>If possible, I’d like to konw (more) about…<br>Please find my two main questions below.<br>At your convenience, would you please send me…..</p>
+<p><strong>获取他人意见或者许可：</strong>Please let me know if this is OK with you.<br>What do you think?<br>Please let me know what you think.</p>
+<p><strong>客套话：</strong><br>Please do not hesitate to let me know if you need any help or further information.<br>Please feel free to let me know if you have any comments or questions.<br>！feel free最好不要用在下级对上级的情况<br>Please feel free to email me if you have any questions.<br>！feel free最好不要用在下级对上级的情况<br>Any questions feel free to let us know.   ！feel free最好不要用在下级对上级的情况<br>Feel free to give your comments. </p>
+<p><strong>结尾：</strong><br>Thank you very much for your kind consideration! I am sorry for any inconvenience.<br>Looking forward to hearing from you soon/seeing/meeting you.<br>Thank you in advance.<br>Any feedback you can give me on this would be greatly/highly/much appraciated.<br>Thank you for your kind consideration. ！谢谢你的善解人意<br>Thank you for your assistance with….<br>Many thanks<br>Again, really appreciate your help!</p>
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p><strong>（简洁不是很manner）如果你给别人做事：</strong>Will do. 好的，我会去做<br>On it now. 我现在就开始做<br>Will send over a draft by the end of the day. 下班前会给您初搞<br>I am having trouble accessing XYZ’s site. Might have to get back to you tomorrow. Is that okay?<br>I have a lab report and a problem set due on the same day.Could I have an extension till Wednesday?</p>
+<p><strong>（简洁不是很manner）如果是自己负责的项目：</strong>Received with thank.<br>How’s your XXX(research paper, draft analysis, lab report) going? ！催进度<br>Then second half needs a bit more work. Check this report we published last quarter, and send me what you have this pm. ！你发给我的初搞后半段还得改改。我给你发一份上季度我们写的报告，你按照这个写。下午不管写到哪儿都发给我看看。</p>
+<h1 id="落款"><a href="#落款" class="headerlink" title="落款"></a>落款</h1><p>Sincerely,<br>Best regards,<br>Best,<br>Best wishes,</p>
+]]></content>
   </entry>
 </search>

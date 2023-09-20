@@ -315,7 +315,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2023-07-12 11:13:17" itemprop="dateModified" datetime="2023-07-12T11:13:17+08:00">2023-07-12</time>
+        <time title="Modified: 2023-09-20 16:04:01" itemprop="dateModified" datetime="2023-09-20T16:04:01+08:00">2023-09-20</time>
       </span>
 
   
@@ -330,9 +330,62 @@
     <div class="post-body" itemprop="articleBody">
           <h1 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h1><p><strong>经典成核理论</strong>（Classical nucleation theory，<strong>CNT</strong>）是用于研究<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E6%88%90%E6%A0%B8">成核</a>现象的理论模型。</p>
 <p>CNT是建立在成核动力学理论的基础上的，解释了当分子i从气相转移到半径为r的i-mer簇时，系统的吉布斯自由能是如何变化的。这种转变过程被称为气体到粒子的过程。气溶胶形成的吉布斯自由能变化(ΔG)是从蒸汽到团簇的化学势变化，产生团簇表面的自由能，以及溶质分子的溶剂化能的总和，写为</p>
-<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/BackUp\xiaobao-d\typora-user-images\CNT-Classical-Nucleation-Theory.assets\image-20230712111203450.png" alt="image-20230712111203450"></p>
-<p>其中kB是玻尔兹曼常数</p>
-<h1 id="与Molecular-Dynamics（MD）结合"><a href="#与Molecular-Dynamics（MD）结合" class="headerlink" title="与Molecular Dynamics（MD）结合"></a>与Molecular Dynamics（MD）结合</h1>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230712111203450.png" alt="image-20230712111203450"></p>
+<p>其中k<sub>B</sub>是玻尔兹曼常数，T是温度，P<sub>r</sub>是曲面的蒸气压，P<sub>0</sub>是周围环境的实际蒸气压，V<sub>1</sub>是单分子的体积，r是团簇半径，σ是表面张力，ΔG<sub>sol</sub>是溶质分子的溶解能。</p>
+<p>引入相对湿度（RH）和开尔文方程，方程可改写为</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144508720.png" alt="image-20230920144508720"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144615028.png" alt="image-20230920144615028"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920144645571.png" alt="image-20230920144645571"></p>
+<p>P<sub>sat</sub>平面的饱和蒸汽压，σ可以从MD模拟得到。</p>
+<h1 id="与Molecular-Dynamics（MD）结合"><a href="#与Molecular-Dynamics（MD）结合" class="headerlink" title="与Molecular Dynamics（MD）结合"></a>与Molecular Dynamics（MD）结合</h1><p>接下仅是记录求成核能垒的过程</p>
+<p>V<sub>1</sub>可以利用Multiwfn软件求到：<a target="_blank" rel="noopener" href="http://sobereva.com/102">谈谈分子体积的计算 - 思想家公社的门口：量子化学·分子模拟·二次元 (sobereva.com)</a></p>
+<p>RH可以自己设定值，如：0.8、0.9、1.0、1.5等</p>
+<p>ΔG<sub>sol</sub>由Gaussian软件计算得到：<a target="_blank" rel="noopener" href="http://sobereva.com/327">谈谈隐式溶剂模型下溶解自由能和体系自由能的计算 - 思想家公社的门口：量子化学·分子模拟·二次元 (sobereva.com)</a></p>
+<p>接下主要说明σ如何求得</p>
+<p>首先先计算出团簇得径向数量密度ρ(r)（写代码），使用双曲函数进行拟合（gnuplot），得到液相密度</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920150019138.png" alt="image-20230920150019138"></p>
+<p>ρ<sub>α</sub> 是液相密度和ρ<sub>β</sub>是气相密度，气相密度可忽略不计，r为变量，r<sub>0</sub>为常数值，可以调节函数进行拟合，得到ρ<sub>α</sub>和ξ。</p>
+<p>拟合脚本fit.gnu</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920155159475.png" alt="image-20230920155159475"></p>
+<p>fit.par</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920155343814.png" alt="image-20230920155343814"></p>
+<p>求Irving-Kirkwood压力张量<img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920151617450.png" alt="image-20230920151617450"></p>
+<p>f<sub>k</sub>是作用在表面上的成对分子力的法向分量，u(r<sub>ij</sub>)是分子I和j的成对相互作用能</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152028981.png" alt="image-20230920152028981"></p>
+<p>i，j之间可能没有穿过表面、穿过一次表面和穿过两次表面，所以这里需要有一个距离判断，r是某一个表面的半径，需要在r<sub>min</sub>和r<sub>max</sub>之间才会穿过表面</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152356503.png" alt="image-20230920152356503"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152412370.png" alt="image-20230920152412370"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152429810.png" alt="image-20230920152429810"></p>
+<p>接着还要判断通过λ判断，是一次穿过还是两次穿过，两次穿过的话fk需要乘2</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920152214834.png" alt="image-20230920152214834"></p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154235885.png" alt="image-20230920154235885"></p>
+<p>通过对P<sub>N</sub>(r)的函数进行积分得到W的功</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154437008.png" alt="image-20230920154437008"></p>
+<p>R<sub>β</sub>是球体在蒸汽区的半径，P<sub>β</sub>是蒸汽压。由于蒸气压较低，上述第二项可以省略</p>
+<p>接着求团簇的有效半径</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920150707998.png" alt="image-20230920150707998"></p>
+<p>dr之间的数量*r<sup>3</sup>，然后从0到最大半径处积分</p>
+<p>最后通过W和Re得到σ</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154712145.png" alt="image-20230920154712145"></p>
+<p>成核速率</p>
+<p><img src="/2023/03/07/CNT-Classical-Nucleation-Theory/image-20230920154756313.png" alt="image-20230920154756313"></p>
+<p>其中J<sub>0</sub>为指前因子，ΔG*为成核势垒</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>(1) Farkas, L. Keimbildungsgeschwindigkeit in übersättigten Dämpfen. <em>Z. Phys. Chem.</em> <strong>1927</strong>, <em>125U</em>, 236-242.</p>
+<p>(2) Becker, R.; Döring, W. Kinetische Behandlung Der Keimbildung in übersättigten Dämpfen. <em>Ann. Phys.</em> <strong>1935</strong>, <em>416</em>, 719-752.</p>
+<p>(3) Frenkel, J. Statistical Theory of Condensation Phenomena. <em>J. Chem. Phys.</em> <strong>1939</strong>, <em>7</em>, 200-201.</p>
+<p>(4) Skinner, L. M.; Sambles, J. R. The Kelvin Equation—a Review. <em>J. Aerosol Sci.</em> <strong>1972</strong>, <em>3</em>, 199-210.</p>
+<p>(5) Walton, J. P. R. B.; Tildesley, D. J.; Rowlinson, J. S.; Henderson, J. R. The Pressure Tensor at the Planar Surface of a Liquid. <em>Mol. Phys.</em> <strong>1983</strong>, <em>48</em>, 1357-1368.</p>
+<p>(6) Li, X.; Hede, T.; Tu, Y.; Leck, C.; Ågren, H. Surface-Active <em>cis</em>-Pinonic Acid in Atmospheric Droplets: A Molecular Dynamics Study. <em>J. Phys. Chem. Lett.</em> <strong>2010</strong>, <em>1</em>, 769-773.</p>
+<p>(7) Li, X.; Hede, T.; Tu, Y.; Leck, C.; Ågren, H. Glycine in Aerosol Water Droplets: A Critical Assessment of Köhler Theory by Predicting Surface Tension from Molecular Dynamics Simulations. <em>Atmos. Chem. Phys.</em> <strong>2011</strong>, <em>11</em>, 519-527.</p>
+<p>(8) Thompson, S. M.; Gubbins, K. E.; Walton, J. P. R. B.; Chantry, R. A. R.; Rowlinson, J. S. A Molecular Dynamics Study of Liquid Drops. <em>J. Chem. Phys.</em> <strong>1984</strong>, <em>81</em>, 530-542.</p>
+<p>(9) Zakharov, V. V.; Brodskaya, E. N.; Laaksonen, A. Surface Tension of Water Droplets: A Molecular Dynamics Study of Model and Size Dependencies. <em>J. Chem. Phys.</em> <strong>1997</strong>, <em>107</em>, 10675-10683.</p>
+<p>(10) Vehkamäki, H.; Riipinen, I. Thermodynamics and Kinetics of Atmospheric Aerosol Particle Formation and Growth. <em>Chem. Soc. Rev.</em> <strong>2012</strong>, <em>41</em>, 5160-5173.</p>
+<p>(11) Zhao, Z.; Kong, K.; Wang, S.; Zhou, Y.; Cheng, D.; Wang, W.; Zeng, X. C.; Li, H. Understanding Hygroscopic Nucleation of Sulfate Aerosols: Combination of Molecular Dynamics Simulation with Classical Nucleation Theory. <em>J. Phys. Chem. Lett.</em> <strong>2019</strong>, <em>10</em>, 1126-1132.</p>
+<p>(12) Zhang, R.; Khalizov, A.; Wang, L.; Hu, M.; Xu, W. Nucleation and Growth of Nanoparticles in the Atmosphere. <em>Chem. Rev.</em> <strong>2012</strong>, <em>112</em>, 1957-2011.</p>
+<p>(13) Talanquer, V.; Oxtoby, D. W. Nucleation on a Solid Substrate: A Density Functional Approach. <em>J. Chem. Phys.</em> <strong>1996</strong>, <em>104</em>, 1483-1492.</p>
+<p>(14) Liu, L.; Guo, S.; Zhao, Z.; Li, H. Free Energy Prediction of Ion-Induced Nucleation of Aqueous Aerosols. <em>J. Phys. Chem. A</em> <strong>2022</strong>, <em>126</em>, 2407-2416.</p>
+<p>(15) Ushcats, M. V.; Bulavin, L. A.; Sysoev, V. M.; Bardik, V. Y.; Alekseev, A. N. Statistical Theory of Condensation – Advances and Challenges. <em>J. Mol. Liq.</em> <strong>2016</strong>, <em>224</em>, 694-712.</p>
+
       
     </div>
 
