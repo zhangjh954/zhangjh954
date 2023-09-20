@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Atmospheric Cluster Dynamics Code（ACDC）使用教程</title>
-    <url>/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[<p>！先大致列个框架，之后有时间再来补细节</p>
-<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>大气团簇动力学代码（ACDC），是研究气相分子形成大气新粒子的工具。ACDC通过生成和求解给定环境条件下的簇出生-死亡方程来模拟分子簇和小纳米簇颗粒的动力学，从而产生簇浓度和形成速率的时间演变。<br>ACDC可用于：<br>a.使用量子化学计算得出的数据模拟不同化合物的簇形成<br>b.研究簇增长过程的细节（<em>eg</em>：增长路径）<br>c.通过生成合成测试数据来评估解释测量分子簇数据的实验方法<br>d.生成用于大规模模型的纳米颗粒形成速率数据</p>
-<h1 id="Run之前的准备工作"><a href="#Run之前的准备工作" class="headerlink" title="Run之前的准备工作"></a>Run之前的准备工作</h1><h2 id="软件需求"><a href="#软件需求" class="headerlink" title="软件需求"></a>软件需求</h2><ul>
-<li>Perl（为code运行提供语言环境）</li>
-<li>Either Matlab or Fortran</li>
-</ul>
-<p>可以使用Fortran或者Matlab来执行ACDC code，但是Matlab可执行的功能全一些，所以这里只介绍Matlab。（不详细解释软件的安装以及使用）</p>
-<h2 id="code获取"><a href="#code获取" class="headerlink" title="code获取"></a>code获取</h2><p>在文尾的github链接中获取ACDC的code<img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230219212615820.png" alt="image-20230219212615820">我们主要使用目录ACDC-main\ACDC_Matlab_standard下的内容</p>
-<h1 id="Running-the-Matlab-ACDC"><a href="#Running-the-Matlab-ACDC" class="headerlink" title="Running the Matlab-ACDC"></a>Running the Matlab-ACDC</h1><p>Matlab的工作包中包含主要程序<strong>run_steadystate_ABB.m</strong>和<strong>rates_and_deltags_ABe.m</strong>。<br>程序的输入参数的文件官方给了example：<strong>input_example_run_steadystate_ABB.m</strong> 和 <strong>input_example_rates_and_deltags_ABe.m</strong>，并且每一个设置都给了说明。<br>此外，我们还需要团簇能量文件（<strong>Energy_and_rate_files</strong>）和团簇设定文件（<strong>Cluster_set_files</strong>）。</p>
-<h2 id="团簇设定文件"><a href="#团簇设定文件" class="headerlink" title="团簇设定文件"></a>团簇设定文件</h2><p>团簇设定文件主要涉及组成团簇分子性质以及模拟本系统允许团簇长大流出的标准。<br><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226164508143.png" alt="image-20230226164508143"><br><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226204326252.png" alt="image-20230226204326252"><br><strong>a.定义分子类型</strong><br>以#（注释)开头的第一行为分子的完整名称<br>2-10行定义分子的名称和性质，如果非酸非碱则定义为0，碱性为-1，酸性为+1，但是这个值是相对值，酸性更强则2、3都可。<br><strong>b.定义团簇</strong><br>接下来的内容都是定义模拟中的分子数量，一行中不能超过一个分子的数量是范围值。<br>如果特定的团簇不蒸发，则在行首添加关键词：“no evap”<br><strong>c.定义团簇流出体系的标准</strong><br>如20、30和38行，可能有分子流进系统，也有可能有分子蒸发。不合理的生长准则选择可能会使模拟结果失真。<br><strong>d.定义冷凝下沉团簇</strong><br>主要针对流出模拟体系的团簇，为了防止过高估计团簇的生成速率。与外部冷凝下沉团簇不同，这主要针对体系内的团簇。</p>
-<h2 id="团簇能量文件"><a href="#团簇能量文件" class="headerlink" title="团簇能量文件"></a>团簇能量文件</h2><p><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226164305060.png" alt="image-20230226164305060"><br>1行：计算能量时每个分子和簇类型的分压（Pa），与ACDC模拟对应的压力无关。<br>2行：计算能量时的温度（K）。<br>团簇的名称（需要与团簇设定文件里面的一致)，后面接的是吉布斯自由能（kcal/mol)，或者为相应的焓（kcal/mol)和熵（cal/mol K)。（G=H-TS)</p>
-<p>！当研究只涉及中性团簇时，可以将团簇设定文件中涉及带电离子的团簇comment掉，可不注释带电离子的性质，因为如果团簇组成被#，带电离子就不会在程序中读取。</p>
-<h2 id><a href="#" class="headerlink" title></a></h2><p><strong>input_example_run_steadystate_ABB.m</strong> 和 <strong>input_example_rates_and_deltags_ABe.m</strong>文件里面都有设置说明，根据自己的需要修改就好。（有空再来补充）</p>
-<h2 id="Run"><a href="#Run" class="headerlink" title="Run"></a>Run</h2><p>在Matlab中进入’\ACDC-main-tutorial\ACDC-main\ACDC_Matlab_standard\ACDC_main\‘路径下<br>输入rates_and_deltags_ABe(‘<strong>input_rates_and_deltags_ABe.m</strong>’)得到ΔG、蒸发速率等图像，出生-死亡方程（equations acdc.m）、速率常数（get coll.m, get evap.m etc）、运行模拟命令（driver acdc.m）。<br>输入run_steadystate_ABB(‘<strong>input_run_steadystate_ABB.m</strong>‘)得到不同浓度下的形成速率、团簇的生长路径等。</p>
-<h1 id="Citation"><a href="#Citation" class="headerlink" title="Citation"></a>Citation</h1><ul>
-<li>This repository (<a href="https://github.com/tolenius/ACDC">https://github.com/tolenius/ACDC</a>)</li>
-<li>Olenius et al.: Free energy barrier in the growth of sulfuric acid–ammonia and sulfuric acid–dimethylamine clusters, J. Chem. Phys. 139, 084312 (2013), <a href="https://doi.org/10.1063/1.4819024">https://doi.org/10.1063/1.4819024</a></li>
-</ul>
+    <title>Linux命令行实现回收站功能</title>
+    <url>/2023/09/20/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%9E%E7%8E%B0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%8A%9F%E8%83%BD/</url>
+    <content><![CDATA[<p>使用rm命令需要格外小心，因为一旦删除，就无法恢复<br>为了防止误删，我们可以手动创建一个回收站</p>
+<h1 id="1-创建回收站文件夹"><a href="#1-创建回收站文件夹" class="headerlink" title="1.创建回收站文件夹"></a>1.创建回收站文件夹</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir /home/username/.trash</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-重写rm命令"><a href="#2-重写rm命令" class="headerlink" title="2.重写rm命令"></a>2.重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/remove.sh</span><br><span class="line"># 写入</span><br><span class="line"> PARA_CNT=$#               # $#:传给脚本的参数个数</span><br><span class="line"> TRASH_DIR=&quot;/home/username/.trash&quot;     </span><br><span class="line"> for i in $*;              # $*:以一个单字符串显示所有向脚本传递的参数</span><br><span class="line"> do</span><br><span class="line">   STAMP=`date +%s`</span><br><span class="line">   fileName=`basename $i`  # basename $i:删除文件目录，只留文件名称</span><br><span class="line">   mv $i $TRASH_DIR/$fileName.$STAMP   </span><br><span class="line"> done</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 赋予remove.sh可执行权限</span><br><span class="line">chmod +x remove.sh  </span><br></pre></td></tr></table></figure>
+
+<h1 id="3-在bashrc中重写rm命令"><a href="#3-在bashrc中重写rm命令" class="headerlink" title="3.在bashrc中重写rm命令"></a>3.在bashrc中重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line">#写入</span><br><span class="line"> alias rm=&quot;sh /home/username/remove.sh&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使生效</span><br><span class="line">source ~/.bashrc           </span><br></pre></td></tr></table></figure>
+
+<h1 id="4-每天定时清理回收站"><a href="#4-每天定时清理回收站" class="headerlink" title="4.每天定时清理回收站"></a>4.每天定时清理回收站</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e  # 编辑定时任务</span><br><span class="line"># 写入</span><br><span class="line"> 0 0 * * * rm -rf /home/username/.trash/*   # 每天0点清空回收站</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看定时任务</span><br><span class="line">crontab -l  </span><br></pre></td></tr></table></figure>
+
 ]]></content>
   </entry>
   <entry>
@@ -87,28 +84,55 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Hello Wrold</title>
-    <url>/2021/11/14/Hello-Wrold/</url>
-    <content><![CDATA[]]></content>
+    <title>Atmospheric Cluster Dynamics Code（ACDC）使用教程</title>
+    <url>/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p>！先大致列个框架，之后有时间再来补细节</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>大气团簇动力学代码（ACDC），是研究气相分子形成大气新粒子的工具。ACDC通过生成和求解给定环境条件下的簇出生-死亡方程来模拟分子簇和小纳米簇颗粒的动力学，从而产生簇浓度和形成速率的时间演变。<br>ACDC可用于：<br>a.使用量子化学计算得出的数据模拟不同化合物的簇形成<br>b.研究簇增长过程的细节（<em>eg</em>：增长路径）<br>c.通过生成合成测试数据来评估解释测量分子簇数据的实验方法<br>d.生成用于大规模模型的纳米颗粒形成速率数据</p>
+<h1 id="Run之前的准备工作"><a href="#Run之前的准备工作" class="headerlink" title="Run之前的准备工作"></a>Run之前的准备工作</h1><h2 id="软件需求"><a href="#软件需求" class="headerlink" title="软件需求"></a>软件需求</h2><ul>
+<li>Perl（为code运行提供语言环境）</li>
+<li>Either Matlab or Fortran</li>
+</ul>
+<p>可以使用Fortran或者Matlab来执行ACDC code，但是Matlab可执行的功能全一些，所以这里只介绍Matlab。（不详细解释软件的安装以及使用）</p>
+<h2 id="code获取"><a href="#code获取" class="headerlink" title="code获取"></a>code获取</h2><p>在文尾的github链接中获取ACDC的code<img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230219212615820.png" alt="image-20230219212615820">我们主要使用目录ACDC-main\ACDC_Matlab_standard下的内容</p>
+<h1 id="Running-the-Matlab-ACDC"><a href="#Running-the-Matlab-ACDC" class="headerlink" title="Running the Matlab-ACDC"></a>Running the Matlab-ACDC</h1><p>Matlab的工作包中包含主要程序<strong>run_steadystate_ABB.m</strong>和<strong>rates_and_deltags_ABe.m</strong>。<br>程序的输入参数的文件官方给了example：<strong>input_example_run_steadystate_ABB.m</strong> 和 <strong>input_example_rates_and_deltags_ABe.m</strong>，并且每一个设置都给了说明。<br>此外，我们还需要团簇能量文件（<strong>Energy_and_rate_files</strong>）和团簇设定文件（<strong>Cluster_set_files</strong>）。</p>
+<h2 id="团簇设定文件"><a href="#团簇设定文件" class="headerlink" title="团簇设定文件"></a>团簇设定文件</h2><p>团簇设定文件主要涉及组成团簇分子性质以及模拟本系统允许团簇长大流出的标准。<br><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226164508143.png" alt="image-20230226164508143"><br><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226204326252.png" alt="image-20230226204326252"><br><strong>a.定义分子类型</strong><br>以#（注释)开头的第一行为分子的完整名称<br>2-10行定义分子的名称和性质，如果非酸非碱则定义为0，碱性为-1，酸性为+1，但是这个值是相对值，酸性更强则2、3都可。<br><strong>b.定义团簇</strong><br>接下来的内容都是定义模拟中的分子数量，一行中不能超过一个分子的数量是范围值。<br>如果特定的团簇不蒸发，则在行首添加关键词：“no evap”<br><strong>c.定义团簇流出体系的标准</strong><br>如20、30和38行，可能有分子流进系统，也有可能有分子蒸发。不合理的生长准则选择可能会使模拟结果失真。<br><strong>d.定义冷凝下沉团簇</strong><br>主要针对流出模拟体系的团簇，为了防止过高估计团簇的生成速率。与外部冷凝下沉团簇不同，这主要针对体系内的团簇。</p>
+<h2 id="团簇能量文件"><a href="#团簇能量文件" class="headerlink" title="团簇能量文件"></a>团簇能量文件</h2><p><img src="/2023/02/26/Atmospheric-Cluster-Dynamics-Code%EF%BC%88ACDC%EF%BC%89%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/image-20230226164305060.png" alt="image-20230226164305060"><br>1行：计算能量时每个分子和簇类型的分压（Pa），与ACDC模拟对应的压力无关。<br>2行：计算能量时的温度（K）。<br>团簇的名称（需要与团簇设定文件里面的一致)，后面接的是吉布斯自由能（kcal/mol)，或者为相应的焓（kcal/mol)和熵（cal/mol K)。（G=H-TS)</p>
+<p>！当研究只涉及中性团簇时，可以将团簇设定文件中涉及带电离子的团簇comment掉，可不注释带电离子的性质，因为如果团簇组成被#，带电离子就不会在程序中读取。</p>
+<h2 id><a href="#" class="headerlink" title></a></h2><p><strong>input_example_run_steadystate_ABB.m</strong> 和 <strong>input_example_rates_and_deltags_ABe.m</strong>文件里面都有设置说明，根据自己的需要修改就好。（有空再来补充）</p>
+<h2 id="Run"><a href="#Run" class="headerlink" title="Run"></a>Run</h2><p>在Matlab中进入’\ACDC-main-tutorial\ACDC-main\ACDC_Matlab_standard\ACDC_main\‘路径下<br>输入rates_and_deltags_ABe(‘<strong>input_rates_and_deltags_ABe.m</strong>’)得到ΔG、蒸发速率等图像，出生-死亡方程（equations acdc.m）、速率常数（get coll.m, get evap.m etc）、运行模拟命令（driver acdc.m）。<br>输入run_steadystate_ABB(‘<strong>input_run_steadystate_ABB.m</strong>‘)得到不同浓度下的形成速率、团簇的生长路径等。</p>
+<h1 id="Citation"><a href="#Citation" class="headerlink" title="Citation"></a>Citation</h1><ul>
+<li>This repository (<a href="https://github.com/tolenius/ACDC">https://github.com/tolenius/ACDC</a>)</li>
+<li>Olenius et al.: Free energy barrier in the growth of sulfuric acid–ammonia and sulfuric acid–dimethylamine clusters, J. Chem. Phys. 139, 084312 (2013), <a href="https://doi.org/10.1063/1.4819024">https://doi.org/10.1063/1.4819024</a></li>
+</ul>
+]]></content>
   </entry>
   <entry>
-    <title>Linux命令行实现回收站功能</title>
-    <url>/2023/09/20/Linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%AE%9E%E7%8E%B0%E5%9B%9E%E6%94%B6%E7%AB%99%E5%8A%9F%E8%83%BD/</url>
-    <content><![CDATA[<p>使用rm命令需要格外小心，因为一旦删除，就无法恢复<br>为了防止误删，我们可以手动创建一个回收站</p>
-<h1 id="1-创建回收站文件夹"><a href="#1-创建回收站文件夹" class="headerlink" title="1.创建回收站文件夹"></a>1.创建回收站文件夹</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mkdir /home/username/.trash</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-重写rm命令"><a href="#2-重写rm命令" class="headerlink" title="2.重写rm命令"></a>2.重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/remove.sh</span><br><span class="line"># 写入</span><br><span class="line"> PARA_CNT=$#               # $#:传给脚本的参数个数</span><br><span class="line"> TRASH_DIR=&quot;/home/username/.trash&quot;     </span><br><span class="line"> for i in $*;              # $*:以一个单字符串显示所有向脚本传递的参数</span><br><span class="line"> do</span><br><span class="line">   STAMP=`date +%s`</span><br><span class="line">   fileName=`basename $i`  # basename $i:删除文件目录，只留文件名称</span><br><span class="line">   mv $i $TRASH_DIR/$fileName.$STAMP   </span><br><span class="line"> done</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 赋予remove.sh可执行权限</span><br><span class="line">chmod +x remove.sh  </span><br></pre></td></tr></table></figure>
-
-<h1 id="3-在bashrc中重写rm命令"><a href="#3-在bashrc中重写rm命令" class="headerlink" title="3.在bashrc中重写rm命令"></a>3.在bashrc中重写rm命令</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line">#写入</span><br><span class="line"> alias rm=&quot;sh /home/username/remove.sh&quot;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使生效</span><br><span class="line">source ~/.bashrc           </span><br></pre></td></tr></table></figure>
-
-<h1 id="4-每天定时清理回收站"><a href="#4-每天定时清理回收站" class="headerlink" title="4.每天定时清理回收站"></a>4.每天定时清理回收站</h1><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">crontab -e  # 编辑定时任务</span><br><span class="line"># 写入</span><br><span class="line"> 0 0 * * * rm -rf /home/username/.trash/*   # 每天0点清空回收站</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查看定时任务</span><br><span class="line">crontab -l  </span><br></pre></td></tr></table></figure>
-
+    <title>英语邮件</title>
+    <url>/2023/02/25/%E8%8B%B1%E8%AF%AD%E9%82%AE%E4%BB%B6/</url>
+    <content><![CDATA[<h1 id="邮件名"><a href="#邮件名" class="headerlink" title="邮件名"></a>邮件名</h1><p>简明扼要，交代事由。</p>
+<h1 id="开头的称谓"><a href="#开头的称谓" class="headerlink" title="开头的称谓"></a>开头的称谓</h1><p>Dear (courtesy title)尊称 (last name)姓 or 全称<br>Dear first name last name<br>courtesy title: Mr(男性),Mrs(已婚女性),Miss(未婚女性),Ms(已婚or未婚),Dr,Prof<br>完全不知道对方是谁：Dear Sir/Madam<br>写给某办公室：Dear xxx Office/Dear colleagues</p>
+<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h2><p><strong>正式邮件开头问候：</strong>I hope this email finds you well. This is 姓名 from 单位.<br>I hope you had a good weekend. 一般周一的时候用<br><strong>开头表示感谢：</strong>Thanks for your email about/feedback on/your invitation/your suggestion.<br><strong>如果对方很快回复，开头表示感谢：</strong>Thanks for your prompt reply.<br><strong>如果自己很晚回复邮件：</strong>Sorry for my late reply.</p>
+<p><strong>写信目的（Writing purpose）：</strong>I am write to you with regards to…<br>I am writing to ask/enquire/let you know/confirm/check/invite you to/to update you on/ask for a faver..<br>I am contacting you to inform..<br>l am reaching out because…</p>
+<p><strong>含附件：</strong><br>I’ve attached… (I have attached the signed agreement to this email)<br>Please find [file] attached.<br>The attached file contains…<br>Please take a look at the attached file.<br>Please refer to the attached file for more details.<br>Could you please sign the attached form and send it back to us by [date]?<br>If the agreement looks good to you, please sign and send it back to us. </p>
+<p><strong>提出请求：</strong>Could you please….?<br>Could you possibly tell me .. ?<br>I’d really appreciate it/be very grateful if you could…<br>It would be very helpful if you could send us/me…<br>I was wondering if you could/if you would be able to<br>If possible, I’d like to konw (more) about…<br>Please find my two main questions below.<br>At your convenience, would you please send me…..</p>
+<p><strong>获取他人意见或者许可：</strong>Please let me know if this is OK with you.<br>What do you think?<br>Please let me know what you think.</p>
+<p><strong>客套话：</strong><br>Please do not hesitate to let me know if you need any help or further information.<br>Please feel free to let me know if you have any comments or questions.<br>！feel free最好不要用在下级对上级的情况<br>Please feel free to email me if you have any questions.<br>！feel free最好不要用在下级对上级的情况<br>Any questions feel free to let us know.   ！feel free最好不要用在下级对上级的情况<br>Feel free to give your comments. </p>
+<p><strong>结尾：</strong><br>Thank you very much for your kind consideration! I am sorry for any inconvenience.<br>Looking forward to hearing from you soon/seeing/meeting you.<br>Thank you in advance.<br>Any feedback you can give me on this would be greatly/highly/much appraciated.<br>Thank you for your kind consideration. ！谢谢你的善解人意<br>Thank you for your assistance with….<br>Many thanks<br>Again, really appreciate your help!</p>
+<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p><strong>（简洁不是很manner）如果你给别人做事：</strong>Will do. 好的，我会去做<br>On it now. 我现在就开始做<br>Will send over a draft by the end of the day. 下班前会给您初搞<br>I am having trouble accessing XYZ’s site. Might have to get back to you tomorrow. Is that okay?<br>I have a lab report and a problem set due on the same day.Could I have an extension till Wednesday?</p>
+<p><strong>（简洁不是很manner）如果是自己负责的项目：</strong>Received with thank.<br>How’s your XXX(research paper, draft analysis, lab report) going? ！催进度<br>Then second half needs a bit more work. Check this report we published last quarter, and send me what you have this pm. ！你发给我的初搞后半段还得改改。我给你发一份上季度我们写的报告，你按照这个写。下午不管写到哪儿都发给我看看。</p>
+<h1 id="落款"><a href="#落款" class="headerlink" title="落款"></a>落款</h1><p>Sincerely,<br>Best regards,<br>Best,<br>Best wishes,</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>地道英语表达</title>
+    <url>/2023/02/25/%E5%9C%B0%E9%81%93%E8%8B%B1%E8%AF%AD%E8%A1%A8%E8%BE%BE/</url>
+    <content><![CDATA[<p><strong>上班：</strong></p>
+<p>1.<em>Tom: I am <strong>going to work</strong>.</em> <em>Mary: Be safe. Love ya.</em>         ！强调去上班的动作。<br>2.<em>I am <strong>on duty</strong> at 8:00 a.m.</em>              ！我早晨8点要值班。（在某一时间段，持续负责某件事。）<br>3.<em>I have to <strong>clock in</strong> by eight a.m.</em>      ！我必须早上8点前打卡上班。<br>5.<em>We are going to <strong>kick off the work</strong> next week!</em>               ！我们将在下周开工！<br>6.<em>I have to <strong>get back to work</strong>.</em>           ！我要回去工作了。</p>
+<p><strong>下班：</strong></p>
+<p>1.<em>I usually go <strong>off duty</strong> at 7 p.m.</em>                                         ！我通常晚上7点下班。<br>2.<em>I had a long day. I didn’t get <strong>off work</strong> until 10 p.m.</em>      ！今天太忙了。忙到晚上10点才下班。<br>3.<em>Don’t forget to <strong>clock out</strong> before you go.</em>                         ！你走之前别忘记打卡。<br>4.<em>I’m getting a bit tired now. let’s <strong>call it a day</strong>.</em>                 ！我有些累了，收工吧。<br>5.<em>Let’s <strong>call it a day</strong> and go to the movies.</em>                         ！我们收工看电影去吧。</p>
+<p><strong>电话英语礼貌结束通话:</strong></p>
+<p>1.<em>I’ve really got to go, I’ll get back to you when I get the office.</em><br>！我真的得走了，我到办公室再打给你。<br>2.<em>Sorry, I must end the conversation. There’s someone on the other line.</em><br>！抱歉，我不能再说了。我还有另外一通电话要接。<br>3.<em>Sorry, I’ve got to hang up. My wife’s waiting for me.</em><br>！抱歉，我得挂电话了。我老婆在等我。<br>4.<em>I think I’d better let you go. I’ll talk to you later.</em><br>！我想我应该让你去忙了，我晚点再打给你。<br>5.<em>I have to get back to work. I’ll call you later tonight.</em><br>！我要回去工作了。我今晚再打给你。<br>6.<em>Shall we continue this later? I’ve got a call waiting.</em><br>！我们可不可以晚一点再继续聊？我这边有个电话打进来了。<br>7.<em>It’s kind of late. Why don’t we talk about it tomorrow?</em><br>！有点晚了。我们何不明天再谈呢?<br>8.<em>I’ve got to meet a client right now. Can we talk later?</em><br>！我现在要去见一个客户。我们可以晚一点再谈吗?<br>9.<em>I won’t keep you any longer.</em>   ！我不耽误你时间了。<br>10.<em>Sorry, it’s getting late. Can you call again tomorrow morning?</em><br>！抱歉，时候不早了。你可不可以明天早上再打来?</p>
+<p><strong>相关部门为你制作好了校园卡，你去取：</strong> <em><strong>pick up</strong> my campus card.</em></p>
 ]]></content>
   </entry>
   <entry>
@@ -142,32 +166,8 @@
 ]]></content>
   </entry>
   <entry>
-    <title>地道英语表达</title>
-    <url>/2023/02/25/%E5%9C%B0%E9%81%93%E8%8B%B1%E8%AF%AD%E8%A1%A8%E8%BE%BE/</url>
-    <content><![CDATA[<p><strong>上班：</strong></p>
-<p>1.<em>Tom: I am <strong>going to work</strong>.</em> <em>Mary: Be safe. Love ya.</em>         ！强调去上班的动作。<br>2.<em>I am <strong>on duty</strong> at 8:00 a.m.</em>              ！我早晨8点要值班。（在某一时间段，持续负责某件事。）<br>3.<em>I have to <strong>clock in</strong> by eight a.m.</em>      ！我必须早上8点前打卡上班。<br>5.<em>We are going to <strong>kick off the work</strong> next week!</em>               ！我们将在下周开工！<br>6.<em>I have to <strong>get back to work</strong>.</em>           ！我要回去工作了。</p>
-<p><strong>下班：</strong></p>
-<p>1.<em>I usually go <strong>off duty</strong> at 7 p.m.</em>                                         ！我通常晚上7点下班。<br>2.<em>I had a long day. I didn’t get <strong>off work</strong> until 10 p.m.</em>      ！今天太忙了。忙到晚上10点才下班。<br>3.<em>Don’t forget to <strong>clock out</strong> before you go.</em>                         ！你走之前别忘记打卡。<br>4.<em>I’m getting a bit tired now. let’s <strong>call it a day</strong>.</em>                 ！我有些累了，收工吧。<br>5.<em>Let’s <strong>call it a day</strong> and go to the movies.</em>                         ！我们收工看电影去吧。</p>
-<p><strong>电话英语礼貌结束通话:</strong></p>
-<p>1.<em>I’ve really got to go, I’ll get back to you when I get the office.</em><br>！我真的得走了，我到办公室再打给你。<br>2.<em>Sorry, I must end the conversation. There’s someone on the other line.</em><br>！抱歉，我不能再说了。我还有另外一通电话要接。<br>3.<em>Sorry, I’ve got to hang up. My wife’s waiting for me.</em><br>！抱歉，我得挂电话了。我老婆在等我。<br>4.<em>I think I’d better let you go. I’ll talk to you later.</em><br>！我想我应该让你去忙了，我晚点再打给你。<br>5.<em>I have to get back to work. I’ll call you later tonight.</em><br>！我要回去工作了。我今晚再打给你。<br>6.<em>Shall we continue this later? I’ve got a call waiting.</em><br>！我们可不可以晚一点再继续聊？我这边有个电话打进来了。<br>7.<em>It’s kind of late. Why don’t we talk about it tomorrow?</em><br>！有点晚了。我们何不明天再谈呢?<br>8.<em>I’ve got to meet a client right now. Can we talk later?</em><br>！我现在要去见一个客户。我们可以晚一点再谈吗?<br>9.<em>I won’t keep you any longer.</em>   ！我不耽误你时间了。<br>10.<em>Sorry, it’s getting late. Can you call again tomorrow morning?</em><br>！抱歉，时候不早了。你可不可以明天早上再打来?</p>
-<p><strong>相关部门为你制作好了校园卡，你去取：</strong> <em><strong>pick up</strong> my campus card.</em></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>英语邮件</title>
-    <url>/2023/02/25/%E8%8B%B1%E8%AF%AD%E9%82%AE%E4%BB%B6/</url>
-    <content><![CDATA[<h1 id="邮件名"><a href="#邮件名" class="headerlink" title="邮件名"></a>邮件名</h1><p>简明扼要，交代事由。</p>
-<h1 id="开头的称谓"><a href="#开头的称谓" class="headerlink" title="开头的称谓"></a>开头的称谓</h1><p>Dear (courtesy title)尊称 (last name)姓 or 全称<br>Dear first name last name<br>courtesy title: Mr(男性),Mrs(已婚女性),Miss(未婚女性),Ms(已婚or未婚),Dr,Prof<br>完全不知道对方是谁：Dear Sir/Madam<br>写给某办公室：Dear xxx Office/Dear colleagues</p>
-<h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1><h2 id="初级"><a href="#初级" class="headerlink" title="初级"></a>初级</h2><p><strong>正式邮件开头问候：</strong>I hope this email finds you well. This is 姓名 from 单位.<br>I hope you had a good weekend. 一般周一的时候用<br><strong>开头表示感谢：</strong>Thanks for your email about/feedback on/your invitation/your suggestion.<br><strong>如果对方很快回复，开头表示感谢：</strong>Thanks for your prompt reply.<br><strong>如果自己很晚回复邮件：</strong>Sorry for my late reply.</p>
-<p><strong>写信目的（Writing purpose）：</strong>I am write to you with regards to…<br>I am writing to ask/enquire/let you know/confirm/check/invite you to/to update you on/ask for a faver..<br>I am contacting you to inform..<br>l am reaching out because…</p>
-<p><strong>含附件：</strong><br>I’ve attached… (I have attached the signed agreement to this email)<br>Please find [file] attached.<br>The attached file contains…<br>Please take a look at the attached file.<br>Please refer to the attached file for more details.<br>Could you please sign the attached form and send it back to us by [date]?<br>If the agreement looks good to you, please sign and send it back to us. </p>
-<p><strong>提出请求：</strong>Could you please….?<br>Could you possibly tell me .. ?<br>I’d really appreciate it/be very grateful if you could…<br>It would be very helpful if you could send us/me…<br>I was wondering if you could/if you would be able to<br>If possible, I’d like to konw (more) about…<br>Please find my two main questions below.<br>At your convenience, would you please send me…..</p>
-<p><strong>获取他人意见或者许可：</strong>Please let me know if this is OK with you.<br>What do you think?<br>Please let me know what you think.</p>
-<p><strong>客套话：</strong><br>Please do not hesitate to let me know if you need any help or further information.<br>Please feel free to let me know if you have any comments or questions.<br>！feel free最好不要用在下级对上级的情况<br>Please feel free to email me if you have any questions.<br>！feel free最好不要用在下级对上级的情况<br>Any questions feel free to let us know.   ！feel free最好不要用在下级对上级的情况<br>Feel free to give your comments. </p>
-<p><strong>结尾：</strong><br>Thank you very much for your kind consideration! I am sorry for any inconvenience.<br>Looking forward to hearing from you soon/seeing/meeting you.<br>Thank you in advance.<br>Any feedback you can give me on this would be greatly/highly/much appraciated.<br>Thank you for your kind consideration. ！谢谢你的善解人意<br>Thank you for your assistance with….<br>Many thanks<br>Again, really appreciate your help!</p>
-<h2 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h2><p><strong>（简洁不是很manner）如果你给别人做事：</strong>Will do. 好的，我会去做<br>On it now. 我现在就开始做<br>Will send over a draft by the end of the day. 下班前会给您初搞<br>I am having trouble accessing XYZ’s site. Might have to get back to you tomorrow. Is that okay?<br>I have a lab report and a problem set due on the same day.Could I have an extension till Wednesday?</p>
-<p><strong>（简洁不是很manner）如果是自己负责的项目：</strong>Received with thank.<br>How’s your XXX(research paper, draft analysis, lab report) going? ！催进度<br>Then second half needs a bit more work. Check this report we published last quarter, and send me what you have this pm. ！你发给我的初搞后半段还得改改。我给你发一份上季度我们写的报告，你按照这个写。下午不管写到哪儿都发给我看看。</p>
-<h1 id="落款"><a href="#落款" class="headerlink" title="落款"></a>落款</h1><p>Sincerely,<br>Best regards,<br>Best,<br>Best wishes,</p>
-]]></content>
+    <title>Hello Wrold</title>
+    <url>/2021/11/14/Hello-Wrold/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
